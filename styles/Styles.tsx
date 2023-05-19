@@ -2,11 +2,11 @@ import { StyleSheet, StatusBar } from "react-native";
 
 export const stylesLoginForm = StyleSheet.create({
     input: {
-        width: 250,
-        height: 40,
-        margin: 15,
+        width: 280,
+        height: 50,
+        marginVertical: 20,
         backgroundColor: '#fff',
-        padding: 10,
+        padding: 15,
         borderRadius: 10,
     },
 });
@@ -18,16 +18,14 @@ export const stylesApp = StyleSheet.create({
         marginHorizontal: 16,
     },
     item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-    },
-    header: {
-        fontSize: 32,
-        backgroundColor: '#fff',
+        padding: 15,
+        marginVertical: 4,
+        borderWidth: 0.5,
+        borderColor: 'black',
+        borderRadius: 10,
     },
     title: {
-        fontSize: 24,
+        fontSize: 18,
     },
 });
 

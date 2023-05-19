@@ -11,8 +11,9 @@ export function SignUpScreen({ navigation }) {
     const dispatch = useContext(AuthDispatchContext)
 
     useEffect(() => {
-        if (!!auth.key) {
-            navigation.navigate('Home');
+        console.log("Auth network", auth?.network)
+        if (!!auth?.key) {
+            navigation.navigate('MyTab');
         }
     }, [auth])
 
@@ -31,7 +32,7 @@ export function SignUpScreen({ navigation }) {
             console.log('login',data.key)
             await SecureStore.setItemAsync('username',data.key);
             dispatch({type: 'changed', key: data.key})
-            return navigation.navigate('Home')
+            return navigation.navigate('MyTab')
         } else {
             console.error(await req.text())
             alert("error")

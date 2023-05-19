@@ -1,86 +1,63 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
-import { SafeAreaView, TextInput, Button, View, Text} from 'react-native';
-import { createNavigationContainerRef } from '@react-navigation/native';
+import { SafeAreaView, TextInput, Button, View, Text } from 'react-native';
 import { stylesLoginForm } from './styles/Styles';
-import { REACT_APP_HOST_API } from "@env"
 import * as SecureStore from 'expo-secure-store';
-import { AuthContext, AuthDispatchContext } from './context/ContextLogin';
-
+import { AuthDispatchContext } from './context/ContextLogin';
 
 type LoginFormProps = {
     onClick: (username: string, password: string) => any
 }
 
 const LoginForm: FunctionComponent<LoginFormProps> = ({ onClick }) => {
+    const [isLoading, setIsLoading] = React.useState(true)
+    const [isError, setIsError] = React.useState(false)
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
-    const auth = useContext(AuthContext)
     const dispatch = useContext(AuthDispatchContext)
 
     const getValueFor = async () => {
         let result = await SecureStore.getItemAsync('username');
         if (result) {
-            alert("key " + result);
-            dispatch({type: 'changed', key: result})
-            return 
+            dispatch({ type: 'changed', key: result })
+            setIsLoading(false)
         } else {
-            alert("No values stored under that key.");
+            // TODO: revisar que hacer con esto cuando sucede un error
+            setIsError(true)
         }
     }
-    useEffect(()=>{
-        getValueFor()
-    },[])
+    useEffect(() => {
+        // if(isLoading) {
+            getValueFor()
+        // }
+    }, [isLoading])
 
-    const submitHandler = () => {
-        onClick(username, password)
+    const submitHandler = async () => {
+        await onClick(username, password)
     }
 
-    const logoutHandler = async () => {
-        try {
-            let kwargs = { method: 'POST', headers: {} }
+    // if (isLoading) return <Text>Cargando datos...</Text>
+    // if (isError) return <Text>Error...</Text>
 
-            if (!!auth?.key) {
-                kwargs = {
-                    ...kwargs, headers: {
-                        'Authorization': `Token ${auth?.key}`
-                    }
-                }
-            }
-            const req = await fetch(`${REACT_APP_HOST_API}/api-auth/logout/`, { ...kwargs })
-        } catch (e) {
-            console.error(e)
-        }
-        finally {
-            dispatch({ type: 'deleted' })
-            SecureStore.setItemAsync('username', null);
-        }
-    }
     return (
         <>
             <SafeAreaView>
+                <Text>Email</Text>
                 <TextInput
                     style={stylesLoginForm.input}
                     onChangeText={setUsername}
                     value={username}
                 />
+                <Text>Password</Text>
                 <TextInput
                     secureTextEntry={true}
                     style={stylesLoginForm.input}
                     onChangeText={setPassword}
                     value={password}
                 />
-                <Button
-                    onPress={submitHandler}
-                    title="Login"
-                // color="#841584"
-                // accessibilityLabel="Learn more about this purple button"
-                />
-                <View style={{ marginTop: 20 }}>
+                <View style={{ marginTop: 15, padding: 20 }}>
                     <Button
-                        onPress={logoutHandler}
-                        title="Logout"
-                    // color="#841584"
-                    // accessibilityLabel="Learn more about this purple button"
+                        onPress={submitHandler}
+                        title="Login"
                     />
                 </View>
             </SafeAreaView>

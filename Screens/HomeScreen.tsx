@@ -8,8 +8,8 @@ const Stack2 = createNativeStackNavigator();
 export function HomeScreen() {
     return (
         <NavigationContainer independent>
-            <Stack2.Navigator initialRouteName="Lists">
-                <Stack2.Screen name="List" component={ListScreen} />
+            <Stack2.Navigator initialRouteName="List">
+                <Stack2.Screen name="List" component={ListScreen} options={{headerShown: false}} />
                 <Stack2.Screen name="Details" component={DetailsScreen} />
             </Stack2.Navigator>
         </NavigationContainer>
