@@ -2,18 +2,18 @@ import { useContext, useEffect, useState, useCallback } from 'react';
 import { SectionList, FlatList, TouchableOpacity, Text, View, AppStateStatus, Platform, AppState } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView, TextInput, TouchableWithoutFeedback } from 'react-native';
-import { stylesApp } from '../styles/Styles';
+import { stylesApp, stylesHomeDitails } from '../styles/Styles';
 import { AuthContext } from '../context/ContextLogin';
 import { REACT_APP_HOST_API } from "@env"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Network from 'expo-network'
 import { useQuery, focusManager } from 'react-query';
 import { useRefreshOnFocus } from '../hooks/useRefetchOnFocus';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 
 type RootStackParamList = {
     List: undefined;
-    Details: { item: { id: string, name: string } };
+    Details: { item: { id: string, name: string, last_name: string, number_phone: string } };
 };
 
 type ListProps = NativeStackScreenProps<RootStackParamList, 'List'>
@@ -155,12 +155,12 @@ export const ListScreen: React.FunctionComponent<ListProps> = ({ navigation }) =
 
     return (
         <SafeAreaView style={stylesApp.container}>
-            <View style={{ backgroundColor: 'black', padding: 10, alignContent: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <View style={{ backgroundColor: 'black', padding: 10, alignContent: 'center', justifyContent: 'space-between', marginBottom: 10, borderRadius:5 }}>
                 <Text style={{ color: 'white' }}>Status: {isOffline ? 'offline' : 'online'}</Text>
                 <Text style={{ color: 'white' }}>Sincronizacion: {isSyncingData ? 'cargando...' : 'finalizada'}</Text>
             </View>
             <TextInput
-                style={{ paddingVertical: 15, paddingHorizontal: 15, backgroundColor: 'white', marginBottom: 10, fontSize: 16 }}
+                style={{ paddingVertical: 15, paddingHorizontal: 15, backgroundColor: 'white', marginBottom: 10, fontSize: 16, borderRadius:30 }}
                 onChangeText={(text) => setSearch(text.toLowerCase())}
                 defaultValue={search}
                 placeholder="Buscar..."
@@ -192,9 +192,21 @@ export const ListScreen: React.FunctionComponent<ListProps> = ({ navigation }) =
 export const DetailsScreen: React.FunctionComponent<DetailsProps> = ({ route }) => {
     const { item } = route.params
 
+    console.log("DetailsScreen", item)
+
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Details Screen {item.name}</Text>
-        </View>
+        <>
+            <View style={stylesHomeDitails.container_name}>
+
+                <View style={{alignItems:'center'}}>
+                <FontAwesome name="user-circle" size={65} color="black" />
+                    <Text style={stylesHomeDitails.title}>{item.name}{" "}{item.last_name}!</Text>
+                </View>
+            </View>
+            <View style={stylesHomeDitails.container_number}>
+                <Text style={stylesHomeDitails.title_number}>Telefono:{item.number_phone}</Text>
+            </View>
+        </>
+
     );
 }

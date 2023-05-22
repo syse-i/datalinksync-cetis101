@@ -7,8 +7,7 @@ import { View, Button } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext, AuthDispatchContext } from "../context/ContextLogin";
 import { REACT_APP_HOST_API } from "@env"
-
-
+import { stylesButton } from "../styles/Styles";
 
 
 export const SettingsScreen = ({ navigation }) => {
@@ -38,10 +37,11 @@ export const SettingsScreen = ({ navigation }) => {
         }
     }
     return (
-        <View style={{ margin: 30 }}>
+        <View style={{padding:15}}>
             <Button
-                title="Logout"
+                title="Cerrar sesíon"
                 onPress={logoutHandler}
+                color={'black'}
             />
         </View>
     )

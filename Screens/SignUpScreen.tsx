@@ -27,7 +27,6 @@ export function SignUpScreen({ navigation }) {
         })
 
         if (req.ok) {
-            alert("funciona")
             const data = await req.json()
             console.log('login',data.key)
             await SecureStore.setItemAsync('username',data.key);

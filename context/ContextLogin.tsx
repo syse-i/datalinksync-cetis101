@@ -8,9 +8,6 @@ export const authReducer = (data, action) => {
     case 'changed': {
       return { ...data, key: action.key }
     }
-    case 'loginScreen':{
-      return {...data, showLogin: action?.showLogin}
-    }
     case 'setNetwork': {
       const network = { ...data?.network, ...action?.network }
       return { ...data, network }

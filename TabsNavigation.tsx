@@ -10,42 +10,14 @@ import { Entypo } from '@expo/vector-icons';
 export const Tab = createBottomTabNavigator();
 
 export const MyTabs = () => {
-  // const [isLoading, setIsLoading] = React.useState(true)
-  // const [auth, dispatch] = React.useReducer(authReducer, { key: null });
-
-  // const checkNetworkConnection = React.useCallback(async () => {
-  //   if (isLoading) {
-  //     const network = await Network.getNetworkStateAsync()
-  //     dispatch({ type: 'setNetwork', network })
-  //     setIsLoading(false)
-  //   }
-  // }, [isLoading])
-
-  // React.useEffect(() => {
-  //   // TODO: revisar como hacer para constantemente revisar si existe coneccion a internet
-  //   checkNetworkConnection()
-  // }, [])
-
-  // if (isLoading) <>Loading...</>
-  // console.log('tab')
-  // return (
-  //   <AuthContext.Provider value={auth}>
-  //     <AuthDispatchContext.Provider value={dispatch}>
-  //       <Tab.Navigator initialRouteName={'SignUp'}>
-  //         <Tab.Screen name="Home" component={HomeScreen} />
-  //         <Tab.Screen name="Settings" component={SettingsScreen} />
-  //       </Tab.Navigator>
-  //     </AuthDispatchContext.Provider>
-  //   </AuthContext.Provider>
-  // );
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === 'Home') {
+        if (route.name === 'Alumnos') {
           iconName = 'list'
-        } else if (route.name === 'Settings') {
+        } else if (route.name === 'Configuracion') {
           iconName = 'sound-mix'
         }
 
@@ -55,8 +27,8 @@ export const MyTabs = () => {
       tabBarActiveTintColor: 'tomato',
       tabBarInactiveTintColor: 'gray',
     })}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Alumnos" component={HomeScreen} />
+      <Tab.Screen name="Configuracion" component={SettingsScreen} />
     </Tab.Navigator>
   )
 }

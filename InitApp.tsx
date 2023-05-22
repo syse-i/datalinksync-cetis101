@@ -5,6 +5,7 @@ import { MyTabs } from './TabsNavigation';
 import { SignUpScreen } from './Screens/SignUpScreen';
 import * as Network from 'expo-network';
 import { AuthContext, AuthDispatchContext, authReducer } from './context/ContextLogin';
+import * as SecureStore from 'expo-secure-store';
 
 const Stack = createNativeStackNavigator()
 
@@ -15,7 +16,10 @@ const InitApp = () => {
     const checkNetworkConnection = React.useCallback(async () => {
         const network = await Network.getNetworkStateAsync()
         dispatch({ type: 'setNetwork', network })
+        const value = await SecureStore.getItemAsync('username');
+        dispatch({ type: 'changed', key: value });
         setIsLoading(false)
+
     }, [dispatch])
 
     React.useEffect(() => {
@@ -27,11 +31,12 @@ const InitApp = () => {
 
     if (isLoading) <>Loading...</>
 
+    if (null) console.log('auth?.key')
     return (
         <AuthContext.Provider value={auth}>
             <AuthDispatchContext.Provider value={dispatch}>
                 <NavigationContainer independent>
-                    <Stack.Navigator initialRouteName={!auth?.key ? 'MyTab': 'Login'}>
+                    <Stack.Navigator initialRouteName={auth?.key ? 'MyTab' : 'Login'}>
                         <Stack.Screen name='Login' component={SignUpScreen} options={{ headerShown: false }} />
                         <Stack.Screen name='MyTab' component={MyTabs} options={{ headerShown: false }} />
                     </Stack.Navigator>

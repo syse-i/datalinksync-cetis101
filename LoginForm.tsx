@@ -3,6 +3,8 @@ import { SafeAreaView, TextInput, Button, View, Text } from 'react-native';
 import { stylesLoginForm } from './styles/Styles';
 import * as SecureStore from 'expo-secure-store';
 import { AuthDispatchContext } from './context/ContextLogin';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+<FontAwesome name="unlock-alt" size={24} color="black" />
 
 type LoginFormProps = {
     onClick: (username: string, password: string) => any
@@ -27,7 +29,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ onClick }) => {
     }
     useEffect(() => {
         // if(isLoading) {
-            getValueFor()
+        getValueFor()
         // }
     }, [isLoading])
 
@@ -41,13 +43,16 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ onClick }) => {
     return (
         <>
             <SafeAreaView>
-                <Text>Email</Text>
+                <View style={{alignItems:'center', marginBottom:100}}>
+                    <FontAwesome name="unlock-alt" size={100} color="black" />
+                </View>
+                <Text><Ionicons name="mail-open-sharp" size={24} color="black" />   Email</Text>
                 <TextInput
                     style={stylesLoginForm.input}
                     onChangeText={setUsername}
                     value={username}
                 />
-                <Text>Password</Text>
+                <Text><FontAwesome name="unlock" size={24} color="black" />  Contraseña</Text>
                 <TextInput
                     secureTextEntry={true}
                     style={stylesLoginForm.input}
@@ -57,7 +62,8 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ onClick }) => {
                 <View style={{ marginTop: 15, padding: 20 }}>
                     <Button
                         onPress={submitHandler}
-                        title="Login"
+                        title="Acceder"
+                        color={'black'}
                     />
                 </View>
             </SafeAreaView>
