@@ -33,7 +33,7 @@ export const stylesApp = StyleSheet.create({
 
 export const stylesHomeDitails = StyleSheet.create({
     title: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: 'bold',
         paddingTop: 10,
         textAlign: 'center'
@@ -54,7 +54,7 @@ export const stylesHomeDitails = StyleSheet.create({
     },
 
     title_number: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center'
     },

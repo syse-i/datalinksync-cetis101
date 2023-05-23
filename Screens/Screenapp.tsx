@@ -11,9 +11,13 @@ import { useQuery, focusManager } from 'react-query';
 import { useRefreshOnFocus } from '../hooks/useRefetchOnFocus';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 
+
+
+type DetailItem = { id: string, name: string, last_name: string, number_phone: string }
+
 type RootStackParamList = {
     List: undefined;
-    Details: { item: { id: string, name: string, last_name: string, number_phone: string } };
+    Details: { item: DetailItem };
 };
 
 type ListProps = NativeStackScreenProps<RootStackParamList, 'List'>
@@ -21,16 +25,17 @@ type DetailsProps = NativeStackScreenProps<RootStackParamList, 'Details'>
 
 type AuthProps = { key: string, network: Network.NetworkState }
 
-type CetisAlumnosType = {
-    id: string,
-    name: string
-}
+// type CetisAlumnosType = {
+//     id: string,
+//     name: string
+// }
 
+type CetisAlumnosType = DetailItem
+  
 type CetisAlumnosStateType = CetisAlumnosType[] | null
 
 const APIGetCetisAlumnos = async (authToken: AuthProps["key"]): Promise<CetisAlumnosType[]> => {
     try {
-        console.log("Consultando datos de la API...")
         const response = await fetch(`${REACT_APP_HOST_API}/v1/CetisAlumnos/`, {
             headers: {
                 'Authorization': `Token ${authToken}`,
@@ -43,7 +48,6 @@ const APIGetCetisAlumnos = async (authToken: AuthProps["key"]): Promise<CetisAlu
 
         const data = await response.json()
         const results = data?.results ?? []
-        console.log("APIGetCetisAlumnos", results)
         return results
     } catch (e) {
         console.error(e)
@@ -55,7 +59,6 @@ const APIGetCetisAlumnos = async (authToken: AuthProps["key"]): Promise<CetisAlu
 
 const APIPatchCetisAlumnos = async (authToken: AuthProps["key"]): Promise<boolean> => {
     try {
-        console.log("Marcando los datos de la API como sincronizados...")
         const response = await fetch(`${REACT_APP_HOST_API}/v1/CetisAlumnos/mark_as_read/`, {
             method: 'PATCH',
             headers: {
@@ -65,7 +68,7 @@ const APIPatchCetisAlumnos = async (authToken: AuthProps["key"]): Promise<boolea
         if (!response.ok) {
             return false
         }
-        console.log("APIPatchCetisAlumnos", await response.text())
+
         return true
     } catch (e) {
         console.error(e)
@@ -77,7 +80,6 @@ const getCetisAlumnosOffline = async (): Promise<CetisAlumnosStateType> => {
     try {
         const data = await AsyncStorage.getItem("@storage_Key")
         const results = JSON.parse(data)
-        console.log("getCetisAlumnosOffline", results)
         return results
     } catch (e) {
         console.error(e)
@@ -122,9 +124,9 @@ const syncCetisAlumnosAPI = async (authToken: string): Promise<CetisAlumnosState
 }
 
 export const ListScreen: React.FunctionComponent<ListProps> = ({ navigation }) => {
-    const [isSyncingData, setIsSyncingData] = useState(true)
-    const [isOffline, setIsOffline] = useState(false)
-    const [search, setSearch] = useState('')
+    const [isSyncingData, setIsSyncingData] = useState<boolean>(true)
+    const [isOffline, setIsOffline] = useState<boolean>(false)
+    const [search, setSearch] = useState<string>('')
     const auth = useContext(AuthContext)
 
     const { data, isError, isLoading, isIdle, refetch } = useQuery(['useCetisAlumnosAPI'], async () => {
@@ -147,7 +149,7 @@ export const ListScreen: React.FunctionComponent<ListProps> = ({ navigation }) =
     if (isLoading) return <Text>Cargando datos...</Text>
     if (isError) return <Text>Error...</Text>
 
-    const onPressHandler = (item: { id: string, name: string }) => (() => (
+    const onPressHandler =(item: DetailItem) => (() => (
         navigation.navigate('Details', { 'item': item })
     ))
 
@@ -191,9 +193,6 @@ export const ListScreen: React.FunctionComponent<ListProps> = ({ navigation }) =
 
 export const DetailsScreen: React.FunctionComponent<DetailsProps> = ({ route }) => {
     const { item } = route.params
-
-    console.log("DetailsScreen", item)
-
     return (
         <>
             <View style={stylesHomeDitails.container_name}>
@@ -204,7 +203,7 @@ export const DetailsScreen: React.FunctionComponent<DetailsProps> = ({ route }) 
                 </View>
             </View>
             <View style={stylesHomeDitails.container_number}>
-                <Text style={stylesHomeDitails.title_number}>Telefono:{item.number_phone}</Text>
+                <Text style={stylesHomeDitails.title_number}>Telefono: {item.number_phone}</Text>
             </View>
         </>
 

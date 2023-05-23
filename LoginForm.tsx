@@ -1,49 +1,25 @@
-import React, { FunctionComponent, useContext, useEffect } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { SafeAreaView, TextInput, Button, View, Text } from 'react-native';
 import { stylesLoginForm } from './styles/Styles';
-import * as SecureStore from 'expo-secure-store';
-import { AuthDispatchContext } from './context/ContextLogin';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
-<FontAwesome name="unlock-alt" size={24} color="black" />
 
-type LoginFormProps = {
+
+export type LoginFormProps = {
     onClick: (username: string, password: string) => any
 }
 
 const LoginForm: FunctionComponent<LoginFormProps> = ({ onClick }) => {
-    const [isLoading, setIsLoading] = React.useState(true)
-    const [isError, setIsError] = React.useState(false)
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const dispatch = useContext(AuthDispatchContext)
-
-    const getValueFor = async () => {
-        let result = await SecureStore.getItemAsync('username');
-        if (result) {
-            dispatch({ type: 'changed', key: result })
-            setIsLoading(false)
-        } else {
-            // TODO: revisar que hacer con esto cuando sucede un error
-            setIsError(true)
-        }
-    }
-    useEffect(() => {
-        // if(isLoading) {
-        getValueFor()
-        // }
-    }, [isLoading])
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const submitHandler = async () => {
         await onClick(username, password)
     }
 
-    // if (isLoading) return <Text>Cargando datos...</Text>
-    // if (isError) return <Text>Error...</Text>
-
     return (
         <>
             <SafeAreaView>
-                <View style={{alignItems:'center', marginBottom:100}}>
+                <View style={{ alignItems: 'center', marginBottom: 100 }}>
                     <FontAwesome name="unlock-alt" size={100} color="black" />
                 </View>
                 <Text><Ionicons name="mail-open-sharp" size={24} color="black" />   Email</Text>

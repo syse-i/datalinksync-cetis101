@@ -31,7 +31,6 @@ const InitApp = () => {
 
     if (isLoading) <>Loading...</>
 
-    if (null) console.log('auth?.key')
     return (
         <AuthContext.Provider value={auth}>
             <AuthDispatchContext.Provider value={dispatch}>

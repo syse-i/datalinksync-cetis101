@@ -7,7 +7,6 @@ import { StatusBar } from 'expo-status-bar';
 const queryClient = new QueryClient();
 
 export default function App() {
-  console.log('app')
   return (
     <>
       <StatusBar style="dark" />

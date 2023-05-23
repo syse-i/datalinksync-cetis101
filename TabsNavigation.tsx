@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SignUpScreen } from './Screens/SignUpScreen';
 import { HomeScreen } from './Screens/HomeScreen';
 import { SettingsScreen } from './Screens/SettingScreen';
-import { AuthContext, AuthDispatchContext, authReducer } from './context/ContextLogin';
-import * as Network from 'expo-network';
 import { Entypo } from '@expo/vector-icons';
 
 export const Tab = createBottomTabNavigator();
@@ -12,8 +9,8 @@ export const Tab = createBottomTabNavigator();
 export const MyTabs = () => {
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
+      tabBarIcon: ({ color, size }) => {
+        let iconName: 'list' | 'sound-mix';
 
         if (route.name === 'Alumnos') {
           iconName = 'list'

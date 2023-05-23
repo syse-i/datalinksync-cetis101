@@ -7,12 +7,16 @@ import { View, Button } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext, AuthDispatchContext } from "../context/ContextLogin";
 import { REACT_APP_HOST_API } from "@env"
-import { stylesButton } from "../styles/Styles";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const SettingsScreen = ({ navigation }) => {
     const auth = useContext(AuthContext)
     const dispatch = useContext(AuthDispatchContext)
+
+    const clearHAndler = async () => {
+        await AsyncStorage.clear()
+    }
 
     const logoutHandler = async () => {
         try {
@@ -25,7 +29,6 @@ export const SettingsScreen = ({ navigation }) => {
                     }
                 }
             }
-            console.log("LOGOUT", kwargs)
             await fetch(`${REACT_APP_HOST_API}/api-auth/logout/`, { ...kwargs })
         } catch (e) {
             console.error(e)
@@ -37,12 +40,21 @@ export const SettingsScreen = ({ navigation }) => {
         }
     }
     return (
-        <View style={{padding:15}}>
-            <Button
-                title="Cerrar sesíon"
-                onPress={logoutHandler}
-                color={'black'}
-            />
-        </View>
+        <>
+            <View style={{ padding: 15 }}>
+                <Button
+                    title="Cerrar sesíon"
+                    onPress={logoutHandler}
+                    color={'black'}
+                />
+            </View>
+            <View style={{ padding: 15 }}>
+                <Button
+                    title="Borrar datos"
+                    onPress={clearHAndler}
+                    color={'black'}
+                />
+            </View>
+        </>
     )
 }
